@@ -684,7 +684,7 @@ requires-dist = [
     { name = "fastmcp", specifier = ">=2.10.1" },
     { name = "inquirer", specifier = ">=3.4.0" },
     { name = "keyring", specifier = ">=25.6.0" },
-    { name = "linkedin-scraper", git = "https://github.com/stickerdaniel/linkedin_scraper.git" },
+    { name = "linkedin-scraper", directory = "../linkedin_scraper" },
     { name = "pyperclip", specifier = ">=1.9.0" },
 ]
 
@@ -702,12 +702,27 @@ dev = [
 [[package]]
 name = "linkedin-scraper"
 version = "2.11.5"
-source = { git = "https://github.com/stickerdaniel/linkedin_scraper.git#30f448df90af834bafb7d9e4caebfd0032605163" }
+source = { directory = "../linkedin_scraper" }
 dependencies = [
     { name = "lxml" },
     { name = "python-dotenv" },
     { name = "requests" },
     { name = "selenium" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "lxml", specifier = ">=6.0.0" },
+    { name = "python-dotenv", specifier = ">=1.1.1" },
+    { name = "requests", specifier = ">=2.32.4" },
+    { name = "selenium", specifier = ">=4.33.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pre-commit", specifier = ">=4.2.0" },
+    { name = "python-dotenv", specifier = ">=1.0.0" },
+    { name = "ruff", specifier = ">=0.12.1" },
 ]
 
 [[package]]

@@ -10,7 +10,7 @@ import logging
 from typing import Any, Dict, List
 
 from fastmcp import FastMCP
-from linkedin_scraper import Person
+from linkedin_scraper import Person, PersonSearch
 
 from linkedin_mcp_server.error_handler import handle_tool_error, safe_get_driver
 
@@ -105,3 +105,50 @@ def register_person_tools(mcp: FastMCP) -> None:
             }
         except Exception as e:
             return handle_tool_error(e, "get_person_profile")
+
+    @mcp.tool()
+    async def search_people(search_term: str) -> List[Dict[str, Any]]:
+        """
+        Search for people on LinkedIn using a search term.
+
+        Args:
+            search_term (str): Search term to use for the people search.
+
+        Returns:
+            List[Dict[str, Any]]: List of people search results
+        """
+        try:
+            driver = safe_get_driver()
+
+            logger.info(f"Searching for people: {search_term}")
+            person_search = PersonSearch(
+                search_term=search_term,
+                max_results=10,
+                driver=driver,
+                get=True,
+                scrape=True,
+                close_on_complete=False,
+            )
+
+            # Get the results from the search
+            results = person_search.results
+
+            # Convert results to structured dictionaries
+            search_results: List[Dict[str, Any]] = [
+                {
+                    "name": person.name,
+                    "linkedin_url": person.linkedin_url,
+                    "linkedin_username": person.linkedin_username,
+                    "title": person.title,
+                    "location": person.location,
+                    "connection_degree": person.connection_degree,
+                    "profile_image_url": person.profile_image_url,
+                }
+                for person in results
+            ]
+
+            return search_results
+
+        except Exception as e:
+            error = handle_tool_error(e, "search_people")
+            return [error]  # Return as list for consistency

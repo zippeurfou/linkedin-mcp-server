@@ -16,7 +16,7 @@ dependencies = [
 linkedin_mcp_server = ["py.typed"]
 
 [tool.uv.sources]
-linkedin-scraper = { git = "https://github.com/stickerdaniel/linkedin_scraper.git" }
+linkedin-scraper = { path = "/Users/mferradou/Projects/linkedin_scraper" }
 
 [dependency-groups]
 dev = [
